@@ -13,7 +13,7 @@ import (
 )
 
 var client *dict.Client
-var dictList map[string]dict.Dict
+var dictMap map[string]dict.Dict
 
 func main() {
 	var err error
@@ -39,15 +39,17 @@ func main() {
 		log.Fatal("Unable to get dictionaries")
 	}
 
-	dictList = make(map[string]dict.Dict)
+	dictMap = make(map[string]dict.Dict)
 	for _, d := range dictArr {
 		log.Println("Using dictionary", d.Name, d.Desc)
-		dictList[d.Name] = d
+		dictMap[d.Name] = d
 	}
 
 	router := httprouter.New()
-	//router.GET("/", Index)
+
 	router.GET("/define/:word", Define)
+	router.GET("/databases", Databases)
+	router.GET("/db", Databases)
 
 	chain := alice.New(Logger).Then(router)
 	if *gzip {

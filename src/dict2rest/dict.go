@@ -15,6 +15,10 @@ type definition struct {
 	Word       string `json:"word"`
 	Definition string `json:"definition"`
 }
+type dictionary struct {
+	Name string `json:"name"`
+	Desc string `json:"description"`
+}
 
 type jsonError struct {
 	Code    int    `json:"code"`
@@ -56,6 +60,18 @@ func FormatDefinitions(defs []*dict.Defn) ([]definition, error) {
 	return definitions, nil
 }
 
+func Databases(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	var dicts []dictionary
+	for _, d := range dictMap {
+		dicts = append(dicts, dictionary{d.Name, d.Desc})
+	}
+	if len(dicts) == 0 {
+		Render(w, 200, jsonError{554, "No databases present"})
+		return
+	}
+	Render(w, 200, dicts)
+}
+
 func Define(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	word := ps.ByName("word")
 	queryValues := r.URL.Query()
@@ -63,7 +79,7 @@ func Define(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
 	var dict string
 
-	_, ok := dictList[d]
+	_, ok := dictMap[d]
 	if d != "" && !ok {
 		Render(w, 400, jsonError{500, "Invalid database"})
 		return

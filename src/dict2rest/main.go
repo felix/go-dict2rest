@@ -21,6 +21,7 @@ func main() {
 	port := flag.String("port", "8080", "Listen port")
 	dictHost := flag.String("dicthost", "localhost", "Dict server name")
 	dictPort := flag.String("dictport", "2628", "Dict server port")
+	gzip := flag.Bool("gzip", false, "Enable gzip compression")
 
 	flag.Parse()
 
@@ -48,8 +49,11 @@ func main() {
 	//router.GET("/", Index)
 	router.GET("/define/:word", Define)
 
-	chain := alice.New(Logger, Gzip).Then(router)
-	//chain := alice.New(Logger).Then(router)
+	chain := alice.New(Logger).Then(router)
+	if *gzip {
+		chain = alice.New(Logger, Gzip).Then(router)
+		log.Println("Using Gzip compression")
+	}
 
 	listen := ":" + *port
 

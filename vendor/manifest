@@ -2,6 +2,13 @@
 	"version": 0,
 	"dependencies": [
 		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "04b9de9b512f58addf28c9853d50ebef61c3953e",
+			"branch": "master",
+			"path": "/context"
+		},
+		{
 			"importpath": "golang.org/x/net/dict",
 			"repository": "https://go.googlesource.com/net",
 			"revision": "04b9de9b512f58addf28c9853d50ebef61c3953e",

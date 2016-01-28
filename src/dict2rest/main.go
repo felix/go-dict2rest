@@ -4,16 +4,16 @@ import (
 	"flag"
 	"github.com/julienschmidt/httprouter"
 	"github.com/justinas/alice"
+	"github.com/rs/cors"
 	"github.com/stretchr/graceful"
-	"golang.org/x/net/dict"
 	"log"
 	"net/http"
 	"os"
 	"time"
 )
 
-var client *dict.Client
-var dictMap map[string]dict.Dict
+// Globals
+var dictServer string
 
 func main() {
 	var err error
@@ -25,35 +25,47 @@ func main() {
 
 	flag.Parse()
 
-	server := *dictHost + ":" + *dictPort
-	client, err = dict.Dial("tcp", server)
+	dictServer = *dictHost + ":" + *dictPort
+
+	client, err := getDictClient()
 	if err != nil {
-		log.Printf("Unable to connect to dict server %s", server)
 		os.Exit(1)
 	}
-	log.Println("Connected to", server)
 
-	var dictArr []dict.Dict
-	dictArr, err = client.Dicts()
+	// Get the global list of databases
+	dicts, err := getDictionaries(client)
 	if err != nil {
-		log.Fatal("Unable to get dictionaries")
+		log.Println("Unable to get database list")
+		os.Exit(1)
 	}
 
-	dictMap = make(map[string]dict.Dict)
-	for _, d := range dictArr {
-		log.Println("Using dictionary", d.Name, d.Desc)
-		dictMap[d.Name] = d
+	for _, d := range dicts {
+		log.Printf("Available dictionary %s: %s", d.Name, d.Desc)
 	}
+	// No need for it until a request comes in
+	client.Close()
 
+	// Define our routes
 	router := httprouter.New()
+	router.GET("/define/:word", dictDefine)
+	router.GET("/databases", dictDatabases)
+	router.GET("/db", dictDatabases)
 
-	router.GET("/define/:word", Define)
-	router.GET("/databases", Databases)
-	router.GET("/db", Databases)
+	// Define our middlewares
 
-	chain := alice.New(Logger).Then(router)
+	// Going to need some CORS headers
+	cors := cors.New(cors.Options{
+		AllowedHeaders: []string{
+			"Accept", "Content-Type", "Origin",
+		},
+		AllowedMethods: []string{
+			"GET", "OPTIONS",
+		},
+	})
+
+	chain := alice.New(cors.Handler, Logger).Then(router)
 	if *gzip {
-		chain = alice.New(Logger, Gzip).Then(router)
+		chain = alice.New(cors.Handler, Logger, Gzip).Then(router)
 		log.Println("Using Gzip compression")
 	}
 

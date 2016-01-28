@@ -20,8 +20,8 @@ func Logger(next http.Handler) http.Handler {
 		size, _ := bw.Apply(w)
 
 		// Usually milliseconds
-		latency := time.Since(startTime).Seconds()
+		latency := time.Since(startTime).Seconds() * 1000
 
-		log.Printf("%s %s %d %d (%v)\n", r.Method, r.URL.Path, bw.Status, size, latency)
+		log.Printf("%s %s %d %d (%.1fms)\n", r.Method, r.URL.Path, bw.Status, size, latency)
 	})
 }

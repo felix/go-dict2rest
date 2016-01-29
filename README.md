@@ -1,9 +1,11 @@
 # dict2rest
 
-A simple proxy service to provide an HTTP (REST) interface to a Dict protocol
-(RFC 2229) server. Written in Go.
+A simple proxy service to provide an HTTP (REST) interface to a
+[Dict protocol (RFC 2229)](http://tools.ietf.org/html/rfc2229) for the Dict
+protocol. Written in Go.
 
-See [RFC 2229](http://tools.ietf.org/html/rfc2229) for the Dict protocol.
+An instance can _usually_ be access from
+http://felixhanley.info/projects/lahu/dictionary/
 
 ## Installation
 
@@ -37,17 +39,25 @@ Usage of dict2rest:
 
 ## Usage
 
-The URL endpoints try to match the commands defined in RFC 2229 and are
-currently:
+The URL endpoints try to match the commands defined in RFC 2229. Results are
+JSON and have the following format (newlines added for readability):
 
-GET /define/{word}
-GET /define/{word}?dict=wn
 GET /databases
 
-Where 'wn' is one of the names of the server's dictionaries.
+```json
+[
+    {
+        "name":"eng-lhu",
+        "description":"English-Lahu Dictionary ver. 20160128"
+    }, {
+        "name":"lhu-eng",
+        "description":"Lahu-English Dictionary ver. 20160128"
+    }
+]
+```
 
-Definitions are returned as JSON in the following format (newlines added for
-readability):
+GET /define/{word}  
+GET /define/{word}?dict=eng-lhu
 
 ```json
 [
@@ -58,6 +68,8 @@ readability):
     }
 ]
 ```
+
+Where 'eng-lhu' is one of the names of the server's dictionaries.
 
 RFC 2229 error codes are passed through as JSON:
 

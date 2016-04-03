@@ -24,12 +24,12 @@ func Deflate(next http.Handler) http.Handler {
 			next.ServeHTTP(w, req)
 			return
 		}
-		w.Header().Set("Content-Encoding", "deflate")
 		fl, err := flate.NewWriter(w, -1) // Use default compression level
 		if err != nil {
 			next.ServeHTTP(w, req)
 			return
 		}
+		w.Header().Set("Content-Encoding", "deflate")
 		defer fl.Close()
 		flw := flateResponseWriter{Writer: fl, ResponseWriter: w}
 		next.ServeHTTP(flw, req)

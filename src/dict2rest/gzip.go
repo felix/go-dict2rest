@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"github.com/alexedwards/stack"
 )
 
 // Gzip Compression
@@ -17,10 +18,11 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
 
-func Gzip(next http.Handler) http.Handler {
+func Gzip(ctx *stack.Context, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
-			// If gzip is unsupported, revert to standard handler.
+		if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") ||
+		   ctx.Get("handled").(bool) == true {
+			// move on to next handler in the chain
 			next.ServeHTTP(w, req)
 			return
 		}
@@ -28,6 +30,8 @@ func Gzip(next http.Handler) http.Handler {
 		gz := gzip.NewWriter(w)
 		defer gz.Close()
 		gzw := gzipResponseWriter{Writer: gz, ResponseWriter: w}
+		ctx.Put("handled", true)
+		defer ctx.Delete("handled")
 		next.ServeHTTP(gzw, req)
 	})
 }

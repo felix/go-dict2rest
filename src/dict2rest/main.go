@@ -21,7 +21,8 @@ func main() {
 	port := flag.String("port", "8080", "Listen port")
 	dictHost := flag.String("dicthost", "localhost", "Dict server name")
 	dictPort := flag.String("dictport", "2628", "Dict server port")
-	gzip := flag.Bool("gzip", false, "Enable gzip compression")
+	gzip := flag.Bool("gzip", false, "Support gzip compression")
+	deflate := flag.Bool("deflate", false, "Support DEFLATE compression")
 
 	flag.Parse()
 
@@ -63,11 +64,23 @@ func main() {
 		},
 	})
 
-	chain := alice.New(cors.Handler, Logger).Then(router)
+	stdChain := alice.New(cors.Handler, Logger)
 	if *gzip {
-		chain = alice.New(cors.Handler, Logger, Gzip).Then(router)
-		log.Println("Using Gzip compression")
+		stdChain = stdChain.Append(Gzip)
+		log.Println("Adding support for Gzip compression")
 	}
+
+	if *deflate {
+		// Temporary limitation until the iteration logic is fixed up
+		if *gzip {
+			log.Println("Not enabling DEFLATE, presently only one compression method can be active at a time")
+		} else {
+			stdChain = stdChain.Append(Deflate)
+			log.Println("Adding support for DEFLATE compression")
+		}
+	}
+
+	chain := stdChain.Then(router)
 
 	listen := ":" + *port
 

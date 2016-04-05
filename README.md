@@ -27,12 +27,14 @@ The server binary has the following options:
 $ dict2rest --help
 
 Usage of dict2rest:
+  -deflate
+        Support DEFLATE compression
   -dicthost string
         Dict server name (default "localhost")
   -dictport string
         Dict server port (default "2628")
   -gzip
-        Enable gzip compression
+        Support gzip compression
   -port string
         Listen port (default "8080")
 ```

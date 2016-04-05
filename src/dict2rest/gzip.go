@@ -20,7 +20,9 @@ func (w gzipResponseWriter) Write(b []byte) (int, error) {
 func Gzip(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		if !strings.Contains(req.Header.Get("Accept-Encoding"), "gzip") {
+			// If gzip is unsupported, revert to standard handler.
 			next.ServeHTTP(w, req)
+			return
 		}
 		w.Header().Set("Content-Encoding", "gzip")
 		gz := gzip.NewWriter(w)

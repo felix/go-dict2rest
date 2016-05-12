@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/julienschmidt/httprouter"
-	"github.com/justinas/alice"
+	"github.com/alexedwards/stack"
 	"github.com/rs/cors"
 	"github.com/stretchr/graceful"
 	"log"
@@ -64,23 +64,18 @@ func main() {
 		},
 	})
 
-	stdChain := alice.New(cors.Handler, Logger)
+	stdChain := stack.New(stack.Adapt(cors.Handler), stack.Adapt(Logger))
 	if *gzip {
 		stdChain = stdChain.Append(Gzip)
 		log.Println("Adding support for Gzip compression")
 	}
 
 	if *deflate {
-		// Temporary limitation until the iteration logic is fixed up
-		if *gzip {
-			log.Println("Not enabling DEFLATE, presently only one compression method can be active at a time")
-		} else {
-			stdChain = stdChain.Append(Deflate)
-			log.Println("Adding support for DEFLATE compression")
-		}
+		stdChain = stdChain.Append(Deflate)
+		log.Println("Adding support for DEFLATE compression")
 	}
 
-	chain := stdChain.Then(router)
+	chain := stdChain.ThenHandler(router)
 
 	listen := ":" + *port
 

@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"github.com/alexedwards/stack"
 )
 
 // DEFLATE Compression
@@ -17,10 +18,10 @@ func (w flateResponseWriter) Write(b []byte) (int, error) {
 	return w.Writer.Write(b)
 }
 
-func Deflate(next http.Handler) http.Handler {
+func Deflate(ctx *stack.Context, next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if !strings.Contains(req.Header.Get("Accept-Encoding"), "deflate") {
-			// If deflate is unsupported, revert to standard handler.
+		if !strings.Contains(req.Header.Get("Accept-Encoding"), "deflate") ||
+		   ctx.Get("handled").(bool) == true {
 			next.ServeHTTP(w, req)
 			return
 		}
@@ -32,6 +33,8 @@ func Deflate(next http.Handler) http.Handler {
 		w.Header().Set("Content-Encoding", "deflate")
 		defer fl.Close()
 		flw := flateResponseWriter{Writer: fl, ResponseWriter: w}
+		ctx.Put("handled", true)
+		defer ctx.Delete("handled")
 		next.ServeHTTP(flw, req)
 	})
 }

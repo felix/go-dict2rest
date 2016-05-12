@@ -9,15 +9,15 @@ http://felixhanley.info/projects/lahu/dictionary/
 
 ## Installation
 
-This project currently uses [gb](https://getgb.io) as its build tool. All
+This project currently uses Golang 1.6's vendor folder structure. All
 dependencies are in this repository.
 
-Assuming you have `gb` installed it should be as simple as this:
+It should be as simple as this:
 
 ```shell
 git clone https://github.com/felix/go-dict2rest
 cd go-dict2rest
-gb build
+go install dict2rest  # or just 'make'
 ./bin/dict2rest --dicthost dict.org
 ```
 

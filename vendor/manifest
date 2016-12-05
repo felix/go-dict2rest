@@ -1,0 +1,135 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/alexedwards/stack",
+			"repository": "https://github.com/alexedwards/stack",
+			"vcs": "git",
+			"revision": "3ba431d5d12d93bf95dd641ad6aad6691e5eafe9",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/codegangsta/inject",
+			"repository": "https://github.com/codegangsta/inject",
+			"vcs": "git",
+			"revision": "33e0aa1cb7c019ccc3fbe049a8262a6403d30504",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/codegangsta/negroni",
+			"repository": "https://github.com/codegangsta/negroni",
+			"vcs": "git",
+			"revision": "cd9734011043904139c24dbad9a71b21f1586f36",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/go-martini/martini",
+			"repository": "https://github.com/go-martini/martini",
+			"vcs": "git",
+			"revision": "fe605b5cd210047ae3bb73d2b69a5b912a9b423d",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/julienschmidt/httprouter",
+			"repository": "https://github.com/julienschmidt/httprouter",
+			"vcs": "git",
+			"revision": "5dd70ee059943e81987a817fa1a755b11dd119c1",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/justinas/alice",
+			"repository": "https://github.com/justinas/alice",
+			"vcs": "git",
+			"revision": "1051eaf52fcafdd87ead59d28b065f1fcb8274ec",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/martini-contrib/render",
+			"repository": "https://github.com/martini-contrib/render",
+			"vcs": "git",
+			"revision": "ec18f8345a1181146728238980606fb1d6f40e8c",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/oxtoacart/bpool",
+			"repository": "https://github.com/oxtoacart/bpool",
+			"vcs": "git",
+			"revision": "4e1c5567d7c2dd59fa4c7c83d34c2f3528b025d6",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/rs/cors",
+			"repository": "https://github.com/rs/cors",
+			"vcs": "git",
+			"revision": "a62a804a8a009876ca59105f7899938a1349f4b3",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/rs/xhandler",
+			"repository": "https://github.com/rs/xhandler",
+			"vcs": "git",
+			"revision": "ed27b6fd65218132ee50cd95f38474a3d8a2cd12",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/stretchr/graceful",
+			"repository": "https://github.com/stretchr/graceful",
+			"vcs": "git",
+			"revision": "4df1190835320af7076dfcf27b3d071fd3612caf",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/urfave/negroni",
+			"repository": "https://github.com/urfave/negroni",
+			"vcs": "git",
+			"revision": "cd9734011043904139c24dbad9a71b21f1586f36",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/zenazn/goji",
+			"repository": "https://github.com/zenazn/goji",
+			"vcs": "git",
+			"revision": "4d7077956293261309684d3cf1af673f773c6819",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"vcs": "git",
+			"revision": "6cdc0daab091c43fc46193327e0047b4f883c613",
+			"branch": "master",
+			"path": "/context",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/dict",
+			"repository": "https://go.googlesource.com/net",
+			"vcs": "git",
+			"revision": "6cdc0daab091c43fc46193327e0047b4f883c613",
+			"branch": "master",
+			"path": "/dict",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/tylerb/graceful.v1",
+			"repository": "https://gopkg.in/tylerb/graceful.v1",
+			"vcs": "git",
+			"revision": "50a48b6e73fcc75b45e22c05b79629a67c79e938",
+			"branch": "master",
+			"notests": true
+		}
+	]
+}
